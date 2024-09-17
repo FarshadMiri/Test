@@ -1,0 +1,84 @@
+﻿@using Test.UI.Models.ViewModels.User
+@model CreateUserViewModel
+@{
+    ViewData["Title"] = "CreateUser";
+}
+
+<h1>CreateUser</h1>
+
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Family"></label>
+        <input asp-for="Family" class="form-control" />
+        <span asp-validation-for="Family" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Photo"></label>
+        <input asp-for="Photo" type="file" class="form-control" />
+        <span asp-validation-for="Photo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProvinceId">Province</label>
+        <select asp-for="ProvinceId" id="Provinces" class="form-control">
+            <option value="">Select Province</option>
+            @foreach (var province in Model.Provinces)
+            {
+                <option value="@province.ProvinceId">@province.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CityId">City</label>
+        <select asp-for="CityId" id="Cities" class="form-control">
+            <option value="">Select City</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Provinces').change(function () {
+                var provinceId = $(this).val();
+                if (provinceId) {
+                    $.getJSON('@Url.Action("GetCitiesByProvince")', { provinceId: provinceId }, function (data) {
+                        var cityDropdown = $('#Cities');
+                        cityDropdown.empty();
+                        cityDropdown.append('<option value="">Select City</option>');
+                        $.each(data, function (i, city) {
+                            cityDropdown.append('<option value="' + city.cityId + '">' + city.name + '</option>');
+                        });
+                    });
+                } else {
+                    $('#Cities').empty().append('<option value="">Select City</option>');
+                }
+            });
+        });
+    </script>
+}
+
+
