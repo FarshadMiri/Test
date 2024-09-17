@@ -11,5 +11,6 @@ namespace Test.Application.Services
     {
         List<City> GetAllCities();
        List<City> GetCityByProvinceId(int provinceId);
+        Task<City> GetCityByCityIdAsync(int id);
     }
 }

@@ -11,6 +11,7 @@ namespace Test.Application.Services
     public interface IProvinceService
     {
         Task<List<Province>> GetAllProvinces();
+        Task<Province> GetProvinceById(int id);
 
     }
 }

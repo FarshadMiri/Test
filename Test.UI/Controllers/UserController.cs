@@ -59,19 +59,29 @@ namespace Test.UI.Controllers
                     // ذخیره فایل در پوشه مشخص شده
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        model.Photo.CopyToAsync(stream);
+                        await model.Photo.CopyToAsync(stream);
                     }
 
                     // ذخیره مسیر فایل به صورت نسبی
                     photoPath = Path.Combine("uploads", fileName);
                 }
+                var province = await _provinceServices.GetProvinceById(model.ProvinceId);
+                var city = await _cityServices.GetCityByCityIdAsync(model.ProvinceId);
+
+                model.ProvinceName = province.Name;
+                model.CityName = city.Name;
+
+                // مپ کردن مدل به DTO و تنظیم مسیر عکس
                 var userdto = _mapper.Map<UserDto>(model);
+                userdto.Photo = photoPath;
+
+                // ذخیره اطلاعات کاربر در دیتابیس
                 _userServices.CreateUser(userdto);
 
-                return RedirectToAction("Index"); 
+                return RedirectToAction("Index");
             }
 
-            model.Provinces =await _provinceServices.GetAllProvinces();
+            model.Provinces = await _provinceServices.GetAllProvinces();
             model.Cities = _cityServices.GetCityByProvinceId(model.ProvinceId);
 
             return View(model);

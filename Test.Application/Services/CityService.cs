@@ -20,6 +20,11 @@ namespace Test.Application.Services
             return _cityRepository.GetAllCity();
         }
 
+        public async Task<City> GetCityByCityIdAsync(int id)
+        {
+            return await _cityRepository.GetCityByCityIdAsync(id);  
+        }
+
         public List<City> GetCityByProvinceId(int provinceId)
         {
             return _cityRepository.GetCityByProvinceId(provinceId);

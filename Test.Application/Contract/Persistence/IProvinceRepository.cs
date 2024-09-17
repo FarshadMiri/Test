@@ -10,6 +10,7 @@ namespace Test.Application.Contract.Persistence
     public interface IProvinceRepository
     {
        Task<List<Province>> GetAllProvinces();
+        Task<Province> GetProvinceById(int id);
 
     }
 }

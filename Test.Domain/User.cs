@@ -18,7 +18,7 @@ namespace Test.Domain
         [Required]
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
-        public string Photo { get; set; }
+        public string Photo { get; set; }  // مسیر عکس
         public string ProvinceName { get; set; }
         public string CityName { get; set; }
     }

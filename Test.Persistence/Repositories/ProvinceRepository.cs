@@ -20,5 +20,10 @@ namespace Test.Persistence.Repositories
         {
            return await _context.Provinces.ToListAsync();
         }
+
+        public async Task<Province> GetProvinceById(int id)
+        {
+            return await _context.Provinces.FindAsync(id); 
+        }
     }
 }

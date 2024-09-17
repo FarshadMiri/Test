@@ -28,13 +28,11 @@ namespace Test.Application.Services
                 Family = userDto.Family,
                 PhoneNumber = userDto.PhoneNumber,
                 Address = userDto.Address,
-                Photo = userDto.Photo,
+                Photo = userDto.Photo,  // مسیر عکس
                 CityName = userDto.CityName,
-                ProvinceName = userDto.ProvinceName,
-
-
-
+                ProvinceName = userDto.ProvinceName
             };
+
             _userRepository.Add(user);
 
         }

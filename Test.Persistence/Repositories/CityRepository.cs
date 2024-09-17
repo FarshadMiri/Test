@@ -21,7 +21,12 @@ namespace Test.Persistence.Repositories
             return _context.Cities.ToList();
         }
 
-       public List<City> GetCityByProvinceId(int provinceId)
+        public async Task<City> GetCityByCityIdAsync(int id)
+        {
+            return await _context.Cities.FindAsync(id);
+        }
+
+        public List<City> GetCityByProvinceId(int provinceId)
         {
             return  _context.Cities./*Where(c => c.ProvinceId == provinceId).*/ToList();   
         }

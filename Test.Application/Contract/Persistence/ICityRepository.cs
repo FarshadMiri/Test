@@ -12,6 +12,7 @@ namespace Test.Application.Contract.Persistence
        List<City> GetAllCity();
       
          List<City> GetCityByProvinceId(int provinceid);
+        Task<City> GetCityByCityIdAsync(int id);
 
     }
 }

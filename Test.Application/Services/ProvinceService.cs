@@ -21,6 +21,11 @@ namespace Test.Application.Services
         {
             return  await _provinceRepository.GetAllProvinces();
         }
+
+        public async Task<Province> GetProvinceById(int id)
+        {
+            return await _provinceRepository.GetProvinceById(id);
+        }
     }
 }
 
