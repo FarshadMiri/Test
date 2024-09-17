@@ -15,28 +15,32 @@ namespace Test.UI.Controllers
         private readonly ICityService _cityServices;
         private readonly IMapper _mapper;
 
-        public UserController(IUserServices userServices, IProvinceService provinceService, ICityService cityService,IMapper mapper)
+        public UserController(IUserServices userServices, IProvinceService provinceService, ICityService cityService, IMapper mapper)
         {
-                _userServices = userServices;
+            _userServices = userServices;
             _provinceServices = provinceService;
             _cityServices = cityService;
-            _mapper= mapper;    
-            
+            _mapper = mapper;
+
         }
-        public async Task< IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
-            var users=await _userServices.GetUsers();
-            return  View(users);
+            var userDtos = await _userServices.GetUsers();
+            var userViewModels = _mapper.Map<List<ShowUserViewModel>>(userDtos); 
+             
+            
+
+            return View(userViewModels);
         }
         [HttpGet]
-       public async Task< IActionResult> CreateUser()
+        public async Task<IActionResult> CreateUser()
         {
-            var provinces=await _provinceServices.GetAllProvinces();
+            var provinces = await _provinceServices.GetAllProvinces();
             var model = new CreateUserViewModel
             {
-                 Provinces= provinces   
+                Provinces = provinces
             };
-            return View(model); 
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Test.Application;
 using Test.Application.Contract.Persistence;
+using Test.Application.profile;
 using Test.Application.Services;
 using Test.Infrastructure.IOC;
 using Test.Persistence;
@@ -14,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
 

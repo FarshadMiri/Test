@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Test.Application.DTOs;
+using Test.Application.DTOs.Common;
 using Test.Domain;
 using Test.UI.Models.ViewModels.User;
 
@@ -10,7 +11,11 @@ namespace Test.UI
         public MappingProfile()
         {
             CreateMap<CreateUserViewModel, UserDto>().ReverseMap();
-            CreateMap<User, CreateUserViewModel>();
+            CreateMap<ShowUserViewModel, ShowUserDto>().ReverseMap();
+
+           
+
+
         }
 
     }

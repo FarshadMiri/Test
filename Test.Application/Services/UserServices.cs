@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Application.Contract.Persistence;
 using Test.Application.DTOs;
+using Test.Application.DTOs.Common;
 using Test.Domain;
 
 namespace Test.Application.Services
@@ -42,13 +43,12 @@ namespace Test.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<ShowUserDto>> GetUsers()
         {
-           var users=await _userRepository.GetAllAsync();
-
-
-            return users;
-
+            var users = await _userRepository.GetAllAsync();
+            
+            var userDtos = _mapper.Map<List<ShowUserDto>>(users);  // مپ کردن کاربران به DTOها
+            return userDtos;
 
         }
 
