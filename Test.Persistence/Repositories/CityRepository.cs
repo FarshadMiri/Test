@@ -28,7 +28,7 @@ namespace Test.Persistence.Repositories
 
         public List<City> GetCityByProvinceId(int provinceId)
         {
-            return  _context.Cities./*Where(c => c.ProvinceId == provinceId).*/ToList();   
+            return  _context.Cities.Where(c => c.ProvinceId == provinceId).ToList();   
         }
     }
 }

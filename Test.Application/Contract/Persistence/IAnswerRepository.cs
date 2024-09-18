@@ -7,9 +7,8 @@ using Test.Domain;
 
 namespace Test.Application.Contract.Persistence
 {
-    public interface IQuestionRepository
+    public interface IAnswerRepository
     {
-        Task<IEnumerable<Question>> GetAllQuestion();
-
+        Task<bool> SaveAnswer(Answer answer );
     }
 }

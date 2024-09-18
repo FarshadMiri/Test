@@ -11,13 +11,16 @@ namespace Test.Domain
     public class Answer
     {
         [Key]
-        public int AnswerId { get; set; }
-        
-       
-        public int UserId { get; set; }
+        public int Id { get; set; }
+       [ForeignKey("Question")]
         public int QuestionId { get; set; }
-       
-        public string Choice { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; }  
+        
+        public string UserAnswer { get; set; }
+        public Question Question { get; set; }
+
 
     }
 }

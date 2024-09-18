@@ -79,6 +79,8 @@ namespace Test.UI.Controllers
                 var userdto = _mapper.Map<UserDto>(model);
                 userdto.Photo = photoPath;
 
+
+
                 // ذخیره اطلاعات کاربر در دیتابیس
                 _userServices.CreateUser(userdto);
 

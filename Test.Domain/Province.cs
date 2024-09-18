@@ -13,5 +13,6 @@ namespace Test.Domain
         [Key]
         public int ProvinceId { get; set; }
         public string Name { get; set; }
+        public List<City> City { get; set; }
     }
 }

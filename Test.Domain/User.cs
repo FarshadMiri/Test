@@ -21,5 +21,6 @@ namespace Test.Domain
         public string Photo { get; set; }  // مسیر عکس
         public string ProvinceName { get; set; }
         public string CityName { get; set; }
+        public List<Answer> answers { get; set; }   
     }
 }

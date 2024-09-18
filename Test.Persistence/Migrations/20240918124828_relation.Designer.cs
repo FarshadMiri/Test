@@ -12,8 +12,8 @@ using Test.Persistence;
 namespace Test.Persistence.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    [Migration("20240917141515_addtbl")]
-    partial class addtbl
+    [Migration("20240918124828_relation")]
+    partial class relation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,23 +27,27 @@ namespace Test.Persistence.Migrations
 
             modelBuilder.Entity("Test.Domain.Answer", b =>
                 {
-                    b.Property<int>("AnswerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnswerId"));
-
-                    b.Property<string>("Choice")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserAnswer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("AnswerId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Answers");
                 });
@@ -60,7 +64,12 @@ namespace Test.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int");
+
                     b.HasKey("CityId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Cities");
                 });
@@ -144,6 +153,51 @@ namespace Test.Persistence.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Test.Domain.Answer", b =>
+                {
+                    b.HasOne("Test.Domain.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Test.Domain.User", "User")
+                        .WithMany("answers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Test.Domain.City", b =>
+                {
+                    b.HasOne("Test.Domain.Province", "province")
+                        .WithMany("City")
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("province");
+                });
+
+            modelBuilder.Entity("Test.Domain.Province", b =>
+                {
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("Test.Domain.Question", b =>
+                {
+                    b.Navigation("Answers");
+                });
+
+            modelBuilder.Entity("Test.Domain.User", b =>
+                {
+                    b.Navigation("answers");
                 });
 #pragma warning restore 612, 618
         }

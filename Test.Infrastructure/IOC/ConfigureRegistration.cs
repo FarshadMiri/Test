@@ -16,7 +16,7 @@ namespace Test.Infrastructure.IOC
 {
     public static class ConfigureRegistration
     {
-        public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services,
+        public static void   ConfigurePersistenceServices(this IServiceCollection services,
      IConfiguration configuration)
         {
             services.AddDbContext<TestDbContext>(options =>
@@ -29,8 +29,25 @@ namespace Test.Infrastructure.IOC
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserServices, UserServices>();
+
+
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
+            services.AddScoped<IProvinceService, ProvinceService>();
+
+
             services.AddScoped<ICityRepository, CityRepository>();
+            services.AddScoped<ICityService, CityService>();
+
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IQuestionService, QuestionService>();
+
+            services.AddScoped<IAnswerRepository, AnswerRepository>();
+            services.AddScoped<IAnswerService, AnswerService>();
+
+
+
+
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<IProvinceService, ProvinceService>();
@@ -43,7 +60,7 @@ namespace Test.Infrastructure.IOC
 
 
 
-            return services;
+            
 
 
         }

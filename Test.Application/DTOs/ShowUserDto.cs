@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.Application.DTOs.Common
+namespace Test.Application.DTOs
 {
     public class ShowUserDto
     {

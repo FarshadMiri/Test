@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Test.Persistence;
 
@@ -11,9 +12,11 @@ using Test.Persistence;
 namespace Test.Persistence.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    partial class TestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918111923_addtbl")]
+    partial class addtbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,12 +64,7 @@ namespace Test.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProvinceId")
-                        .HasColumnType("int");
-
                     b.HasKey("CityId");
-
-                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Cities");
                 });
@@ -169,22 +167,6 @@ namespace Test.Persistence.Migrations
                     b.Navigation("Question");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Test.Domain.City", b =>
-                {
-                    b.HasOne("Test.Domain.Province", "province")
-                        .WithMany("City")
-                        .HasForeignKey("ProvinceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("province");
-                });
-
-            modelBuilder.Entity("Test.Domain.Province", b =>
-                {
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("Test.Domain.Question", b =>
