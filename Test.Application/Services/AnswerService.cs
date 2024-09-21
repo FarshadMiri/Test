@@ -33,5 +33,31 @@ namespace Test.Application.Services
             _answerRepository.SaveAnswer(answer);
             
         }
+
+        public async Task<AnswerDto> GetAnswerByQuestionIdAndUserId(int questionId, int userId)
+        {
+           var answer= await _answerRepository.GetAnswerByQuestionIdAndUserId(questionId, userId);
+            return _mapper.Map<AnswerDto>(answer);
+        }
+
+        public async Task<IEnumerable<AnswerDto>> GetAnswersByUserId(int userId)
+        {
+           var answer= await _answerRepository.GetAnswersByUserId(userId);
+            return _mapper.Map<AnswerDto[]>(answer);
+
+        }
+
+        public  async Task UpdateAnswer(AnswerDto answerDto)
+        {
+            var answer = new Answer()
+            {
+                 Id = answerDto.Id,
+
+                QuestionId = answerDto.QuestionId,
+                UserId = 1,
+                UserAnswer = answerDto.UserAnswer
+            };
+            await _answerRepository.UpdateAnswer(answer);
+        }
     }
 }

@@ -46,30 +46,85 @@ namespace Test.UI.Controllers
                 CurrentQuestionIndex = index
             };
 
-            return PartialView("_QuestionPartial", model);
+            return View(model);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> SubmitAnswer([FromBody]SubmitAnswerViewModel sumbitAnswer)
+        public async Task<IActionResult> SubmitAnswer([FromBody] SubmitAnswerViewModel submitAnswer)
         {
             if (ModelState.IsValid)
             {
-               var answerDto=_mapper.Map<AnswerDto>(sumbitAnswer);
-              
-              
+                submitAnswer.UserId = 1; // باید UserId کاربر را به‌درستی از context دریافت کنید.
+                var existingAnswer = await _answerService.GetAnswerByQuestionIdAndUserId(submitAnswer.QuestionId, submitAnswer.UserId);
 
-                _answerService.AddAnswer(answerDto);
+                if (existingAnswer != null)
+                {
+                    // اگر پاسخی قبلاً داده شده، آن را آپدیت کنید
+                    existingAnswer.UserAnswer = submitAnswer.UserAnswer;
+
+                    // نیازی به Update نیست، چون موجودیت از قبل در حال ردیابی است
+                    await _answerService.UpdateAnswer(existingAnswer);
+                }
+                else
+                {
+                    // در غیر اینصورت، پاسخ جدید اضافه کنید
+                    var answerDto = _mapper.Map<AnswerDto>(submitAnswer);
+                    _answerService.AddAnswer(answerDto);
+                }
 
                 return Ok();
             }
 
             return BadRequest();
         }
-
-        // پایان آزمون و نمایش نتیجه
-        public IActionResult ShowResult()
+        [HttpGet]
+        public async Task<IActionResult> GetAnswer(int questionId)
         {
-            return View(); // نمایش صفحه نتیجه
+            var userId = 1; // اینجا باید UserId کاربر را دریافت کنید
+            var answer = await _answerService.GetAnswerByQuestionIdAndUserId(questionId, userId);
+
+            if (answer == null)
+            {
+                return Ok(new { userAnswer = "" }); // اگر پاسخی نباشد، پاسخ خالی برگردانید
+            }
+
+            return Ok(new
+            {
+                userAnswer = answer.UserAnswer
+            });
+        }
+        // پایان آزمون و نمایش نتیجه
+        public async Task<IActionResult> ShowResult()
+        {
+            int userId = 1; // باید userId کاربر فعلی را از context یا session دریافت کنید
+
+            // دریافت تمام پاسخ‌های کاربر از دیتابیس
+            var answers = await _answerService.GetAnswersByUserId(userId);
+
+            // محاسبه تعداد پاسخ‌های Yes و No
+            var yesCount = answers.Count(a => a.UserAnswer == "Yes");
+            var noCount = answers.Count(a => a.UserAnswer == "No");
+
+            // تصمیم‌گیری بر اساس تعداد پاسخ‌ها
+            string resultMessage = "";
+            if (yesCount > noCount)
+            {
+                resultMessage = "شما برونگرا هستید!";
+            }
+            else if (noCount > yesCount)
+            {
+                resultMessage = "شما درونگرا هستید!";
+            }
+            else
+            {
+                resultMessage = "نتیجه‌گیری خاصی وجود ندارد!";
+            }
+
+            // ارسال پیام نتیجه به ویو
+            ViewBag.ResultMessage = resultMessage;
+
+            return View();
         }
 
         // هدایت پس از اتمام زمان آزمون
